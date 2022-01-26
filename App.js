@@ -4,36 +4,41 @@ import { View, Text } from 'react-native'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './screens/HomeScreen';
-import AboutScreen from './screens/AboutScreen';
-import FirstPage from './screens/FirstPage';
-import SecondPage from './screens/SecondPage';
+
+import FirstPage from './pages/FirstPage';
+import SecondPage from './pages/SecondPage';
+import ThirdPage from './pages/ThirdPage';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-     <Stack.Navigator initailRouteName='HomeScreen'
+     <Stack.Navigator initailRouteName='FirstPage'
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#FFB6C1',
+          backgroundColor: '#2F4F4F',
         },
-        headerTintColor: '#fff',
+        headerTintColor: '#FFFAF0',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
       }}
      >
         <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{title:'HomeScreen'}}
+        name="FirstPage"
+        component={FirstPage}
+        options={{title:'First Page'}}
         />
         <Stack.Screen
-        name="AboutScreen"
-        component={AboutScreen}
-        options={{title:'AboutScreen'}}
+        name="SecondPage"
+        component={SecondPage}
+        options={{title:'Second Page'}}
+        />
+        <Stack.Screen
+        name="ThirdPage"
+        component={ThirdPage}
+        options={{title:'Third Page'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
