@@ -1,46 +1,109 @@
 
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Image, TouchableOpacity } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer'
 
 import FirstPage from './pages/FirstPage';
 import SecondPage from './pages/SecondPage';
 import ThirdPage from './pages/ThirdPage';
 
-const Stack = createStackNavigator();
 
-const App = () => {
+const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+const NavigationDrawerStructure = (props)=> {
+  const toggleDrawer = ()=>{
+    props.navigationProps.toggleDrawer();
+  };
   return (
-    <NavigationContainer>
-     <Stack.Navigator initailRouteName='FirstPage'
+    <View style={{flexDirection:'row'}}>
+      <TouchableOpacity onPress={()=>toggleDrawer()}>
+        <Image
+          source={require('C:/reactProject/assets/drawerWhite.png')}
+          style={{width:25,height:25,marginLeft:5}}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function firstScreenStack({navigation}) {
+  return (
+    <Stack.Navigator
+      initailRouteName='FirstPage'
       screenOptions={{
         headerStyle: {
           backgroundColor: '#2F4F4F',
         },
         headerTintColor: '#FFFAF0',
         headerTitleStyle: {
-          fontWeight: 'bold',
-        },
+          fontWeight: 'bold'},
+        headerLeft: () => <NavigationDrawerStructure navigationProps={navigation} />
       }}
-     >
-        <Stack.Screen
+    >
+      <Stack.Screen
         name="FirstPage"
         component={FirstPage}
-        options={{title:'First Page'}}
-        />
-        <Stack.Screen
+        options={{ title: 'First Page' }}
+      />
+
+    </Stack.Navigator>
+  )
+}
+
+function secondScreenStack({navigation}) {
+  return (
+    <Stack.Navigator
+      initailRouteName='FirstPage'
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#2F4F4F',
+        },
+        headerTintColor: '#FFFAF0',
+        headerTitleStyle: {
+          fontWeight: 'bold'},
+        headerLeft: () => <NavigationDrawerStructure navigationProps={navigation} />
+      }}
+    >
+
+      <Stack.Screen
         name="SecondPage"
         component={SecondPage}
-        options={{title:'Second Page'}}
-        />
-        <Stack.Screen
+        options={{ title: 'Second Page' }}
+      />
+      <Stack.Screen
         name="ThirdPage"
         component={ThirdPage}
-        options={{title:'Third Page'}}
+        options={{ title: 'Third Page' }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator
+        drawerContentOptions={{
+          activeTintColor: '#20B2AA',
+          itemStyle: { marginVertical: 5 }
+        }}
+      >
+        <Drawer.Screen 
+          name='FirstPage' 
+          component={firstScreenStack}
+          options={{drawerLabel:'First page Option'}}
         />
-      </Stack.Navigator>
+        <Drawer.Screen 
+          name='SecondPage' 
+          component={secondScreenStack} 
+          options={{drawerLabel:'Second page Option'}}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
