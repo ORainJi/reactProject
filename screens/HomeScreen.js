@@ -30,7 +30,7 @@ const HomeScreen = ({navigation}) => {
             <Item
               title="register"
               iconName="person-add"
-              onPress={() => alert('ลงทะเบียน')}
+              onPress={() => navigation.navigate('Register')}
             />
           </HeaderButtons>
         ),  
@@ -43,7 +43,7 @@ const HomeScreen = ({navigation}) => {
             <Text>หน้าหลัก</Text>
             <Button
                 title="Go to About"
-                onPress={() => navigation.navigate('AboutScreen', {
+                onPress={() => navigation.navigate('About', {
                     email: 'ninrat@gmail.com'
                 }
                 )}
