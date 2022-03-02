@@ -11,7 +11,7 @@ const validateSchema = Yup.object().shape({
   password: Yup.string().min(6, 'รหัสผ่ารต้องมี 6 ตัวอักษรขึ้นไป').required('กรุณากรอกรหัสผ่านใหม่อีกครั้ง'),
 });
 
-const RegisterScreen = () => {
+const RegisterScreen = ({navigation}) => {
   return (
     <Container>
       <Content padder>
@@ -24,13 +24,27 @@ const RegisterScreen = () => {
           }}
           validationSchema={validateSchema}
           //เมิ่อคลิแมห้ทำงาน
-          onSubmit={(values) => {
+          onSubmit={async(values,{setSubmitting}) => {
             // same shape as initial values
-            console.log(values);
+            //alert(JSON.stringify(values))
+            try {
+              const url ='https://api.codingthailand.com/api/register';
+              const res = await axios.post(url,{
+                name : values.name,
+                email : values.email,
+                password : values.password
+              })
+              alert(res.data.message)
+              navigation.navigate('Home')
+            } catch (error) {//ถ้าไม่สามารถบันทึกลงเซิฟ
+              alert(error.response.data.errors.email[0]);
+            }finally{
+              setSubmitting(false);
+            }
           }}
         >
           {/* // errors for state(when dont input) */}
-          {({ errors, touched ,values, handleChange, handleBlur}) => (
+          {({ errors, touched ,values, handleChange, handleBlur,handleSubmit,isSubmitting}) => (
             <Form>
               <Item fixedLabel error={errors.name && touched.name?true:false}>
                 <Label>Name</Label>
@@ -55,6 +69,7 @@ const RegisterScreen = () => {
                 value={values.email}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
+                keyboardType='email-address'
                 />
                 {errors.email && touched.email &&<Icon name='close-circle'/> }
                
@@ -72,6 +87,8 @@ const RegisterScreen = () => {
                 value={values.password}
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
+                keyboardType='number-pad'
+                secureTextEntry={true}
                 />
                 {errors.password && touched.password &&<Icon name='close-circle'/> }
                 
@@ -83,7 +100,11 @@ const RegisterScreen = () => {
                     </Item>
                   )
                 }
-              <Button block large style={{ marginTop: 30, backgroundColor: '#FFE4E1' }}>
+              <Button 
+              onPress={handleSubmit}
+              //for open or close button
+              disabled = {isSubmitting}
+              block large style={{ marginTop: 30, backgroundColor: '#FFE4E1' }}>
                 <Text style={{
                   color: '#4682B4',
                   fontSize: 15,

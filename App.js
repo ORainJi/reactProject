@@ -11,6 +11,9 @@ import ProductScreen from './screens/ProductScreen';
 import DetailScreen from './screens/DetailScreen';
 import MenuScreen from './screens/MenuScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import LoginScreen from './screens/LoginScreen';
+
+import UserStoreProvider from './context/UserContext';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -42,6 +45,11 @@ function HomeStack() {
         name="Register"
         component={RegisterScreen}
         options={{title: 'ลงทะเบียน'}}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{title: 'เข้าสู่ระบบ'}}
       />
     </Stack.Navigator>
   );
@@ -77,7 +85,8 @@ function ProductStack(){
 
 function App (){
   return (
-    <NavigationContainer>
+    <UserStoreProvider>
+      <NavigationContainer>
       <Drawer.Navigator
         initialRouteName='Home'
         drawerPositon='left'
@@ -86,6 +95,7 @@ function App (){
         <Drawer.Screen name='ProductStack' component={ProductStack} />
       </Drawer.Navigator>
     </NavigationContainer>
+    </UserStoreProvider>
   );
 }
 
